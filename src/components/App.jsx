@@ -1,33 +1,37 @@
 import { Component } from 'react';
-import { FeedbackOptions } from './FeedbackOptions';
-import { Notification } from './Notification';
-import { Section } from './Section';
-import { Statistics } from './Statistics';
+import { nanoid } from 'nanoid';
+// model.id = nanoid();
 
 export class App extends Component {
   state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+    contacts: [
+      { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
+      { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
+      { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
+      { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
+    name: '',
+    number: '',
   };
-
-  addFeedback = param => {
-    console.log(param);
+  handleChange = evt => {
+    this.setState({ [evt.target.name]: evt.target.value });
+  };
+  addcontact = (namecontact, number) => {
     this.setState(prevstate => {
-      const obj = { ...prevstate };
-      obj[param] = obj[param] + 1;
-      return obj;
+      const arr = [...prevstate.contacts];
+      arr.push({ id: nanoid(), name: namecontact, number: number });
+      return { contacts: arr };
     });
   };
-  countTotalFeedback = () => {
-    return this.state.good + this.state.neutral + this.state.bad;
-  };
-  countPositiveFeedbackPercentage = () => {
-    return Math.floor((this.state.good / this.countTotalFeedback()) * 100) || 0;
+  reset = () => {
+    this.setState({
+      name: '',
+      number: '',
+    });
   };
 
   render() {
-    const { good, neutral, bad } = this.state;
     return (
       <div
         style={{
@@ -40,25 +44,47 @@ export class App extends Component {
           color: '#010101',
         }}
       >
-        <Section title="Please leave feedback">
-          <FeedbackOptions
-            options={Object.keys(this.state)}
-            onLeaveFeedback={this.addFeedback}
-          />
-        </Section>
-        <Section title="Statistics">
-          {this.countTotalFeedback() === 0 ? (
-            <Notification message="There is no feedback" />
-          ) : (
-            <Statistics
-              good={good}
-              neutral={neutral}
-              bad={bad}
-              total={this.countTotalFeedback}
-              positivePercentage={this.countPositiveFeedbackPercentage}
+        <h1>Phonebook</h1>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            this.addcontact(this.state.name, this.state.number);
+            this.reset();
+          }}
+        >
+          <label>
+            Name <br />
+            <input
+              value={this.state.name}
+              onChange={this.handleChange}
+              type="text"
+              name="name"
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+              required
             />
-          )}
-        </Section>
+            <br />
+          </label>
+          <br />
+          <label>
+            Number <br />
+            <input
+              value={this.state.number}
+              onChange={this.handleChange}
+              type="tel"
+              name="number"
+              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+              required
+            />
+          </label>
+          <br />
+          <button type="submit">add contact</button>
+        </form>
+        <h2>Contacts</h2>
+        {this.state.contacts.map(cont => {
+          return <p key={cont.id}>{cont.name}</p>;
+        })}
       </div>
     );
   }
