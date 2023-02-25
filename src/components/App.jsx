@@ -15,7 +15,8 @@ export class App extends Component {
     number: '',
   };
   handleChange = evt => {
-    this.setState({ [evt.target.name]: evt.target.value });
+    const { name, value } = evt.target;
+    this.setState({ [name]: value });
   };
   addcontact = (namecontact, number) => {
     this.setState(prevstate => {
@@ -47,8 +48,9 @@ export class App extends Component {
         <h1>Phonebook</h1>
         <form
           onSubmit={e => {
+            const { name, number } = this.state;
             e.preventDefault();
-            this.addcontact(this.state.name, this.state.number);
+            this.addcontact(name, number);
             this.reset();
           }}
         >
@@ -83,7 +85,11 @@ export class App extends Component {
         </form>
         <h2>Contacts</h2>
         {this.state.contacts.map(cont => {
-          return <p key={cont.id}>{cont.name}</p>;
+          return (
+            <p key={cont.id}>
+              {cont.name} {cont.number}
+            </p>
+          );
         })}
       </div>
     );
