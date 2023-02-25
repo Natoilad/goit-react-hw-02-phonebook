@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { ContactList } from './ContactList';
+import { Filter } from './Filter';
 // model.id = nanoid();
 
 export class App extends Component {
@@ -44,11 +45,12 @@ export class App extends Component {
     return (
       <div
         style={{
+          padding: 50,
           height: '100vh',
           display: 'flex',
-          justifyContent: 'center',
+          // justifyContent: 'center',
           flexDirection: 'column',
-          alignItems: 'center',
+          // alignItems: 'center',
           // fontSize: 40,
           color: '#010101',
         }}
@@ -93,15 +95,7 @@ export class App extends Component {
           <button type="submit">add contact</button>
         </form>
         <h2>Contacts</h2>
-        <label>
-          Find contacts by name <br />
-          <input
-            value={this.state.filter}
-            onChange={this.handleChange}
-            type="text"
-            name="filter"
-          />
-        </label>
+        <Filter handleChange={this.handleChange} filter={this.state.filter} />
         <ContactList listContact={this.filterContact()} />
       </div>
     );
