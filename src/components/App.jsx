@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { ContactList } from './ContactList';
 // model.id = nanoid();
 
 export class App extends Component {
@@ -24,6 +25,13 @@ export class App extends Component {
       arr.push({ id: nanoid(), name: namecontact, number: number });
       return { contacts: arr };
     });
+  };
+  filterContact = e => {
+    const { contacts, filter } = this.state;
+    const filteredContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+    return filteredContacts;
   };
   reset = () => {
     this.setState({
@@ -55,7 +63,8 @@ export class App extends Component {
           }}
         >
           <label>
-            Name <br />
+            Name
+            <br />
             <input
               value={this.state.name}
               onChange={this.handleChange}
@@ -84,13 +93,16 @@ export class App extends Component {
           <button type="submit">add contact</button>
         </form>
         <h2>Contacts</h2>
-        {this.state.contacts.map(cont => {
-          return (
-            <p key={cont.id}>
-              {cont.name} {cont.number}
-            </p>
-          );
-        })}
+        <label>
+          Find contacts by name <br />
+          <input
+            value={this.state.filter}
+            onChange={this.handleChange}
+            type="text"
+            name="filter"
+          />
+        </label>
+        <ContactList listContact={this.filterContact()} />
       </div>
     );
   }
