@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import { ContactList } from '../ContactList/ContactList';
 import { Filter } from '../Filter/Filter';
 import { ContactForm } from '../ContactForm/ContactForm';
+import css from './App.module.css';
 
 export class App extends Component {
   state = {
@@ -49,18 +50,7 @@ export class App extends Component {
 
   render() {
     return (
-      <div
-        style={{
-          padding: 50,
-          height: '100vh',
-          display: 'flex',
-          // justifyContent: 'center',
-          flexDirection: 'column',
-          // alignItems: 'center',
-          // fontSize: 40,
-          color: '#010101',
-        }}
-      >
+      <div className={css.container}>
         <h1>Phonebook</h1>
         <ContactForm addContact={this.addContact} />
         <h2>Contacts</h2>
