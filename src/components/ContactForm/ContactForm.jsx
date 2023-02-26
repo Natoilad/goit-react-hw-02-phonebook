@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
+import css from './ContactForm.module.css';
 
 export class ContactForm extends Component {
   state = {
@@ -18,17 +20,20 @@ export class ContactForm extends Component {
   render() {
     return (
       <form
+        className={css.form}
         onSubmit={e => {
           const { name, number } = this.state;
           e.preventDefault();
-          this.props.addcontact(name, number);
+          this.props.addContact(name, number);
           this.reset();
         }}
       >
-        <label>
-          Name
-          <br />
+        <div>
+          <label className={css.label}>
+            <span>Name</span>
+          </label>
           <input
+            className={css.input}
             value={this.state.name}
             onChange={this.handleChange}
             type="text"
@@ -37,12 +42,12 @@ export class ContactForm extends Component {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
           />
-          <br />
-        </label>
-        <br />
-        <label>
-          Number <br />
+
+          <label>
+            <span>Number</span>
+          </label>
           <input
+            className={css.input}
             value={this.state.number}
             onChange={this.handleChange}
             type="tel"
@@ -51,10 +56,15 @@ export class ContactForm extends Component {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
-        </label>
-        <br />
-        <button type="submit">add contact</button>
+          <button className={css.btn} type="submit">
+            Add contact
+          </button>
+        </div>
       </form>
     );
   }
 }
+
+ContactForm.propTypes = {
+  addContact: PropTypes.func.isRequired,
+};
